@@ -66,6 +66,11 @@ class Environment
         $this->logger->notice($message);
     }
 
+    public function logMessage(string $message)
+    {
+        $this->logger->log($message);
+    }
+
     /**
      * @return LoggerInterface
      */
