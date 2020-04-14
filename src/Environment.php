@@ -68,7 +68,7 @@ class Environment
 
     public function logMessage(string $message)
     {
-        $this->logger->log($message);
+        $this->logger->info($message);
     }
 
     /**
