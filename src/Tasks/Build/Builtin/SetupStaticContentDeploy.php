@@ -82,7 +82,7 @@ class SetupStaticContentDeploy extends AbstractTask
         }
 
         if (count($languages) > 0) {
-            $parameters['--' . DeployStaticOptions::LANGUAGE] = $languages;
+            $parameters[DeployStaticOptions::LANGUAGES_ARGUMENT] = $languages;
         }
 
         if (isset($this->config['static-content']['jobs'])) {
@@ -97,6 +97,7 @@ class SetupStaticContentDeploy extends AbstractTask
         $actions['adminhtml'] = $this->config['static-content']['adminhtml'];
         foreach($actions as $area => $themes){
             foreach($themes as $theme => $languages){
+                $this->environment->log('Start deploy for: '.$area.' '.$theme.' '.implode(' ',$languages));
                 $this->environment->log(
                     $this->runCommand(
                         $this->getStaticContentDeployArrayInput($area,$theme,$languages)
