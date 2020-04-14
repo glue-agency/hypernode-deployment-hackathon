@@ -14,6 +14,8 @@ class SetupStaticContentDeploy extends AbstractTask
 {
     const CMD_NAME_STATIC_CONTENT_DEPLOY = 'setup:static-content:deploy';
 
+    protected $config;
+
     /**
      * @return void
      */
@@ -23,16 +25,10 @@ class SetupStaticContentDeploy extends AbstractTask
 
         try {
             $this->environment->log('Executing static content deploy...');
-            $this->environment->log(
-                $this->runCommand(
-                    $this->getStaticContentDeployArrayInput([Area::AREA_FRONTEND])
-                )->fetch()
-            );
-            $this->environment->log(
-                $this->runCommand(
-                    $this->getStaticContentDeployArrayInput([Area::AREA_ADMINHTML])
-                )->fetch()
-            );
+
+            $this->getConfigValues();
+
+            $this->runStaticDeploys();
         } catch (Error $e) {
             $this->environment->getLogger()->error($e->getMessage());
 
@@ -60,37 +56,59 @@ class SetupStaticContentDeploy extends AbstractTask
 
 
     /**
-     * @param array $areas
-     * @param array $themes
+     * @param string $area
+     * @param string $theme
      * @param array $languages
      *
      * @return ArrayInput
      */
     protected function getStaticContentDeployArrayInput(
-        array $areas = [],
-        array $themes = [],
+        $area = '',
+        $theme = '',
         array $languages = []
     ): ArrayInput {
         $parameters = [];
         $parameters['command'] = self::CMD_NAME_STATIC_CONTENT_DEPLOY;
         $parameters['--' . DeployStaticOptions::FORCE_RUN] = true;
 
-        if (count($areas) > 0) {
-            $parameters['--' . DeployStaticOptions::AREA] = $areas;
+        //$parameters['--' . DeployStaticOptions::EXCLUDE_AREA] = [''];
+
+        if ($area != '') {
+            $parameters['--' . DeployStaticOptions::AREA] = [$area];
         }
 
-        if (count($themes) > 0) {
-            $parameters['--' . DeployStaticOptions::THEME] = $themes;
+        if ($theme != '') {
+            $parameters['--' . DeployStaticOptions::THEME] = [$theme];
         }
 
         if (count($languages) > 0) {
-            $parameters['--' . DeployStaticOptions::LANGUAGES_ARGUMENT] = $languages;
+            $parameters['--' . DeployStaticOptions::LANGUAGE] = $languages;
         }
 
-        if (isset($this->environment->getConfig()['static-content']['jobs'])) {
-            $parameters['--' . DeployStaticOptions::JOBS_AMOUNT] = $languages;
+        if (isset($this->config['static-content']['jobs'])) {
+            $parameters['--' . DeployStaticOptions::JOBS_AMOUNT] = $this->config['static-content']['jobs'];
         }
 
         return new ArrayInput($parameters);
+    }
+
+    protected function runStaticDeploys(){
+        $actions['frontend'] = $this->config['static-content']['frontend'];
+        $actions['adminhtml'] = $this->config['static-content']['adminhtml'];
+        foreach($actions as $area => $themes){
+            foreach($themes as $theme => $languages){
+                $this->environment->log(
+                    $this->runCommand(
+                        $this->getStaticContentDeployArrayInput($area,$theme,$languages)
+                    )->fetch()
+                );
+            }
+        }
+    }
+
+    protected function getConfigValues(){
+        if($this->config === null){
+            $this->config = $this->environment->getConfig();
+        }
     }
 }
