@@ -24,8 +24,8 @@
     "extra": {
         "map": [
             [
-                "src/.hypernode.ci.yml",
-                ".hypernode.ci.yml"
+                "src/.hypernode.ci.yml.sample",
+                ".hypernode.ci.yml.sample"
             ]
         ],
         "grumphp": {
