@@ -89,6 +89,8 @@ class SetupStaticContentDeploy extends AbstractTask
             $parameters['--' . DeployStaticOptions::JOBS_AMOUNT] = $this->config['static-content']['jobs'];
         }
 
+        $parameters['--' . DeployStaticOptions::STRATEGY] = $this->config['static-content']['strategy'];
+
         return new ArrayInput($parameters);
     }
 
