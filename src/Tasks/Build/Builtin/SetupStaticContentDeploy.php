@@ -91,6 +91,9 @@ class SetupStaticContentDeploy extends AbstractTask
 
         $parameters['--' . DeployStaticOptions::STRATEGY] = $this->config['static-content']['strategy'];
 
+
+        $this->environment->logMessage('Deploy parameters: ' . json_encode($parameters));
+
         return new ArrayInput($parameters);
     }
 
