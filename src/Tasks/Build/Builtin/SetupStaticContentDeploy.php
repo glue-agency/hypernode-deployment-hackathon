@@ -68,10 +68,12 @@ class SetupStaticContentDeploy extends AbstractTask
         array $languages = []
     ): ArrayInput {
         $parameters = [];
+
         $parameters['command'] = self::CMD_NAME_STATIC_CONTENT_DEPLOY;
+
         $parameters['--' . DeployStaticOptions::FORCE_RUN] = true;
 
-        //$parameters['--' . DeployStaticOptions::EXCLUDE_AREA] = [''];
+        $parameters['--' . DeployStaticOptions::STRATEGY] = $this->config['static-content']['strategy'];
 
         if ($area != '') {
             $parameters['--' . DeployStaticOptions::AREA] = [$area];
@@ -88,9 +90,6 @@ class SetupStaticContentDeploy extends AbstractTask
         if (isset($this->config['static-content']['jobs'])) {
             $parameters['--' . DeployStaticOptions::JOBS_AMOUNT] = $this->config['static-content']['jobs'];
         }
-
-        $parameters['--' . DeployStaticOptions::STRATEGY] = $this->config['static-content']['strategy'];
-
 
         $this->environment->logMessage('Deploy parameters: ' . json_encode($parameters));
 
