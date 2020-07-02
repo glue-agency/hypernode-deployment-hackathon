@@ -83,6 +83,10 @@ class Environment
         return $this->logger;
     }
 
+    public function getDeploymentMode(){
+        return $this->_appState->getMode();
+    }
+
     public function isProdMode() {
         return $this->_appState->getMode() == \Magento\Framework\App\State::MODE_PRODUCTION;
     }
