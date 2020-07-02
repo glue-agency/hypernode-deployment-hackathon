@@ -26,9 +26,9 @@ class Deploy extends Command
      *
      * @throws Exception
      */
-    public function __construct()
+    public function __construct(\Magento\Framework\App\State $appState)
     {
-        $this->env = new Environment();
+        $this->env = new Environment(null, $appState);
 
         parent::__construct();
     }
