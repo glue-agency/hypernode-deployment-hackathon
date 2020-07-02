@@ -26,8 +26,8 @@ class SetupStaticContentDeploy extends AbstractTask
         try {
             $this->environment->log('Deployment mode: '.$this->environment->getDeploymentMode());
 
-            if($this->environment->isDevMode()){
-                $this->environment->log('Skip executing static content deploy in DEV mode...');
+            if(!$this->environment->isProdMode()){
+                $this->environment->log('Skip executing static content deploy when not in PROD mode...');
                 return;
             }
 
