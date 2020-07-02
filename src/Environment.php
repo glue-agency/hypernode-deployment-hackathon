@@ -30,6 +30,8 @@ class Environment
      */
     protected $config;
 
+    protected $_appState;
+
     /**
      * Constructor.
      *
@@ -37,8 +39,10 @@ class Environment
      *
      * @throws Exception
      */
-    public function __construct(LoggerInterface $logger = NULL)
+    public function __construct(LoggerInterface $logger = NULL, \Magento\Framework\App\State $appState)
     {
+        $this->_appState = $appState;
+
         $this->logger = $logger ?: new Logger('default');
 
         // TODO Check if there is an other solution for getting the Projects root path
@@ -77,6 +81,14 @@ class Environment
     public function getLogger(): LoggerInterface
     {
         return $this->logger;
+    }
+
+    public function isProdMode() {
+        return $this->_appState->getMode() == \Magento\Framework\App\State::MODE_PRODUCTION;
+    }
+
+    public function isDevMode() {
+        return $this->_appState->getMode() == \Magento\Framework\App\State::MODE_DEVELOPER;
     }
 
     /**
