@@ -16,6 +16,11 @@ class SetupDiCompile extends AbstractTask
     public function run()
     {
         try {
+            if($this->environment->isDevMode()){
+                $this->environment->log('Skip executing DI compile in DEV mode...');
+                return;
+            }
+
             $this->environment->log('Executing DI compile...');
             $this->environment->log(
                 $this->runCommand(new ArrayInput(['command' => 'setup:di:compile']))->fetch()

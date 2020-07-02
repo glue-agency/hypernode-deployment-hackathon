@@ -24,6 +24,11 @@ class SetupStaticContentDeploy extends AbstractTask
         // TODO remove files first?
 
         try {
+            if($this->environment->isDevMode()){
+                $this->environment->log('Skip executing static content deploy in DEV mode...');
+                return;
+            }
+
             $this->environment->log('Executing static content deploy...');
 
             $this->getConfigValues();
