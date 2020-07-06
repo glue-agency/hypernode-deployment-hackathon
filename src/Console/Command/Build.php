@@ -42,7 +42,7 @@ class Build extends Command
         $this->setName(static::NAME)
             ->setDefinition(
                 new InputDefinition([
-                    new InputOption('stage', 'master', InputOption::VALUE_OPTIONAL),
+                    new InputOption('stage',null,InputOption::VALUE_OPTIONAL,'the stage of building','master'),
                 ])
             )
             ->setDescription('Builds the Magento 2 application');
