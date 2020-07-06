@@ -36,6 +36,8 @@ abstract class AbstractTask implements TaskInterface
      */
     private $sortOrder = 99999;
 
+    private $stage;
+
     /**
      * Constructor.
      *
@@ -101,5 +103,9 @@ abstract class AbstractTask implements TaskInterface
         $this->exitCode = $application->run($input, $output);
 
         return $output;
+    }
+
+    public function setStage($stage){
+        $this->stage = $stage;
     }
 }
