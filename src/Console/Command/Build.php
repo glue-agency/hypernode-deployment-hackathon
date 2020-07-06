@@ -67,7 +67,7 @@ class Build extends Command
                 $buildTask->setEnvironment($this->env)
                     ->setApplication($this->getApplication())
                     ->setParentCommand($this)
-                    ->setStage($this->env->getConfig()['app-mode'][$input->getOption('stage')])
+                    ->setStage($input->getOption('stage'))
                     ->run();
             }
 
