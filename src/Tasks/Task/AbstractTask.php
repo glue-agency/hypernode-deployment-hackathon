@@ -107,5 +107,6 @@ abstract class AbstractTask implements TaskInterface
 
     public function setStage($stage){
         $this->stage = $stage;
+        return $this;
     }
 }
