@@ -7,6 +7,7 @@ use Hypernode\Deployment\Environment;
 use Hypernode\Deployment\Tasks\Build\BuildTaskList;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -39,7 +40,11 @@ class Build extends Command
     protected function configure()
     {
         $this->setName(static::NAME)
-            ->setDefinition(['stage','master',InputOption::VALUE_OPTIONAL])
+            ->setDefinition(
+                new InputDefinition([
+                    new InputOption('stage', 'master', InputOption::VALUE_OPTIONAL),
+                ])
+            )
             ->setDescription('Builds the Magento 2 application');
 
         parent::configure();
