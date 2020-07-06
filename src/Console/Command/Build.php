@@ -7,6 +7,8 @@ use Hypernode\Deployment\Environment;
 use Hypernode\Deployment\Tasks\Build\BuildTaskList;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -38,6 +40,11 @@ class Build extends Command
     protected function configure()
     {
         $this->setName(static::NAME)
+            ->setDefinition(
+                new InputDefinition([
+                    new InputOption('stage',null,InputOption::VALUE_OPTIONAL,'the stage of building','master'),
+                ])
+            )
             ->setDescription('Builds the Magento 2 application');
 
         parent::configure();
@@ -54,12 +61,13 @@ class Build extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $this->env->log('Starting Hypernode Magento 2 build sequence.');
+            $this->env->log('Starting Hypernode Magento 2 build sequence for stage: '.$input->getOption('stage'));
 
             foreach (BuildTaskList::getTasks() as $buildTask) {
                 $buildTask->setEnvironment($this->env)
                     ->setApplication($this->getApplication())
                     ->setParentCommand($this)
+                    ->setStage($input->getOption('stage'))
                     ->run();
             }
 
