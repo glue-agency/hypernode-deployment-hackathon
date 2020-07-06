@@ -113,4 +113,16 @@ abstract class AbstractTask implements TaskInterface
         $this->stage = $stage;
         return $this;
     }
+
+    public function getDeploymentMode(){
+        return $this->environment->getConfig()['app-mode'][$this->getStage()];
+    }
+
+    public function isProdMode() {
+        return $this->getDeploymentMode() == \Magento\Framework\App\State::MODE_PRODUCTION;
+    }
+
+    public function isDevMode() {
+        return $this->getDeploymentMode() == \Magento\Framework\App\State::MODE_DEVELOPER;
+    }
 }
