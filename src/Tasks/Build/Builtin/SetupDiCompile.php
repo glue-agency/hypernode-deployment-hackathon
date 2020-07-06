@@ -16,9 +16,9 @@ class SetupDiCompile extends AbstractTask
     public function run()
     {
         try {
-            $this->environment->log('Deployment mode: '.$this->environment->getDeploymentMode());
+            $this->environment->log('Deployment mode: '.$this->getDeploymentMode());
 
-            if(!$this->environment->isProdMode()){
+            if(!$this->isProdMode()){
                 $this->environment->log('Skip executing DI compile when not in PROD mode...');
                 return;
             }
