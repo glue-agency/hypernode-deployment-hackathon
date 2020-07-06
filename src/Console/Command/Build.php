@@ -61,7 +61,7 @@ class Build extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $this->env->log('Starting Hypernode Magento 2 build sequence.');
+            $this->env->log('Starting Hypernode Magento 2 build sequence for stage: '.$input->getOption('stage'));
 
             foreach (BuildTaskList::getTasks() as $buildTask) {
                 $buildTask->setEnvironment($this->env)
