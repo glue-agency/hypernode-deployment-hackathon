@@ -104,13 +104,13 @@ class SetupStaticContentDeploy extends AbstractTask
     }
 
     protected function runStaticDeploys(){
-        $areas = ['adminhtml','frontend'];
+        $areas = $areas = array_keys($this->config['static-content']['areas']);
 
         foreach($areas as $area){
 
-            $themes = array_keys($this->config['static-content'][$area]);
+            $themes = array_keys($this->config['static-content']['areas'][$area]);
             foreach($themes as $theme){
-                $langs = $this->config['static-content'][$area][$theme];
+                $langs = $this->config['static-content']['areas'][$area][$theme];
                 $input = $this->getStaticContentDeployArrayInput([$area],[$theme],$langs);
                 $this->runStaticDeploy($input);
             }
