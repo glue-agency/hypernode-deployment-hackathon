@@ -35,7 +35,7 @@ class SetupStaticContentDeploy extends AbstractTask
 
             $this->getConfigValues();
 
-            $this->runStaticDeploy();
+            $this->runStaticDeploys();
         } catch (Error $e) {
             $this->environment->getLogger()->error($e->getMessage());
 
@@ -103,28 +103,26 @@ class SetupStaticContentDeploy extends AbstractTask
         return new ArrayInput($parameters);
     }
 
-    protected function runStaticDeploy(){
-        $areas = [
-            'frontend',
-            'adminhtml',
-        ];
+    protected function runStaticDeploys(){
+        $areas = ['adminhtml','frontend'];
 
-        $allLangs = [];
         foreach($areas as $area){
-            $themes = $this->config['static-content'][$area];
-            foreach($themes as $theme => $languages){
-                foreach ($languages as $language){
-                    $allLangs[$language] = $language;
-                }
+
+            $themes = array_keys($this->config['static-content'][$area]);
+            foreach($themes as $theme){
+                $langs = $this->config['static-content'][$area][$theme];
+                $input = $this->getStaticContentDeployArrayInput([$area],[$theme],$langs);
+                $this->runStaticDeploy($input);
             }
+
         }
+    }
 
-        $themes = array_merge(array_keys($this->config['static-content']['frontend']),array_keys($this->config['static-content']['adminhtml']));
-
+    protected function runStaticDeploy($inputParams){
         $this->environment->logMessage('Start static file deploy ... ');
         $this->environment->log(
             $this->runCommand(
-                $this->getStaticContentDeployArrayInput($areas,$themes,array_keys($allLangs))
+                $inputParams
             )->fetch()
         );
     }
