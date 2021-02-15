@@ -4,7 +4,7 @@
     "license": "MIT",
     "type": "magento2-component",
     "require": {
-        "php": "^7.2",
+        "php": "^7.2|^7.3",
         "magento/module-deploy": "100.3.*",
         "magento/framework": "102.0.*|103.0.*",
         "symfony/yaml": "^4.4"
